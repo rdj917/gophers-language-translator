@@ -4,3 +4,6 @@ This application uses Lombok - Java annotation library which helps to reduce boi
  annotation processor of your IDE.
  
 To pass the server port as argument to the application use command **-Dserver.port=XXX**.
+
+H2 in-memory database is configured. To access the console execute http://localhost:8080/h2-console/ in the browser.
+Use the default credentials.
