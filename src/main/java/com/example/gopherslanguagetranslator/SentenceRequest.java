@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class WordRequest {
+public class SentenceRequest {
 
   @Getter
-  private String englishWord;
+  private String englishSentence;
 }

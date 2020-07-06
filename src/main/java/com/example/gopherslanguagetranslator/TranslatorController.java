@@ -11,4 +11,9 @@ public class TranslatorController {
   public WordResponse translateWord(@RequestBody final WordRequest request) {
     return new WordResponse(request.getEnglishWord() + "hardcode");
   }
+
+  @PostMapping("/sentence")
+  public SentenceResponse translateSentence(@RequestBody final SentenceRequest request) {
+    return new SentenceResponse(request.getEnglishSentence() + "hardcode");
+  }
 }
