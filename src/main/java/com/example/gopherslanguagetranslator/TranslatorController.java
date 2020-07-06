@@ -1,7 +1,6 @@
 package com.example.gopherslanguagetranslator;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +18,14 @@ public class TranslatorController {
 
   @PostMapping("/word")
   public WordResponse translateWord(@RequestBody final WordRequest request) {
-    final String englishWord = StringUtils.trimWhitespace(request.getEnglishWord());
+    final String englishWord = request.getEnglishWord();
+    InputValidator.validateHasText(englishWord);
+    InputValidator.validateHasNoCRLF(englishWord);
+    InputValidator.validateIsAWord(englishWord);
+    final String trimmedEnglishWord = englishWord.trim();
+    final String gopherWord = TranslatorController.processWord(trimmedEnglishWord);
     final Translation translation = new Translation();
-    translation.setEnglish(englishWord);
-    final String gopherWord = englishWord + "_gopher";
+    translation.setEnglish(trimmedEnglishWord);
     translation.setGopher(gopherWord);
     this.repository.save(translation);
     return new WordResponse(gopherWord);
@@ -30,10 +33,14 @@ public class TranslatorController {
 
   @PostMapping("/sentence")
   public SentenceResponse translateSentence(@RequestBody final SentenceRequest request) {
-    final String englishSentence = StringUtils.trimWhitespace(request.getEnglishSentence());
+    final String englishSentence = request.getEnglishSentence();
+    InputValidator.validateHasText(englishSentence);
+    InputValidator.validateHasNoCRLF(englishSentence);
+    InputValidator.validateIsASentence(englishSentence);
+    final String trimmedEnglishSentence = englishSentence.trim();
+    final String gopherSentence = TranslatorController.processSentence(trimmedEnglishSentence);
     final Translation translation = new Translation();
-    translation.setEnglish(englishSentence);
-    final String gopherSentence = englishSentence + "_gopher";
+    translation.setEnglish(trimmedEnglishSentence);
     translation.setGopher(gopherSentence);
     this.repository.save(translation);
     return new SentenceResponse(gopherSentence);
@@ -47,5 +54,13 @@ public class TranslatorController {
 
   private static LinkedHashMap<String, String> convertToMap(final List<Translation> translations) {
     return translations.stream().collect(Collectors.toMap(Translation::getEnglish, Translation::getGopher, (e1, e2) -> e2, LinkedHashMap::new));
+  }
+
+  private static String processWord(final String word) {
+    return word + "_gopher";
+  }
+
+  private static String processSentence(final String sentence) {
+    return sentence + "_gopher";
   }
 }
