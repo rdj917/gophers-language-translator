@@ -1,7 +1,9 @@
 package com.example.gopherslanguagetranslator.service;
 
 import com.example.gopherslanguagetranslator.model.Translation;
+import com.example.gopherslanguagetranslator.repository.TranslationRepository;
 import com.example.gopherslanguagetranslator.utils.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -10,9 +12,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
+@RequiredArgsConstructor
 public class TranslationServiceImpl implements TranslationService {
 
   public static final String DELIMITER = " ";
+
+  private final TranslationRepository repository;
 
   @Override
   public Translation translate(final String text) {
@@ -26,6 +31,8 @@ public class TranslationServiceImpl implements TranslationService {
     final Translation translation = new Translation();
     translation.setEnglish(text.trim());
     translation.setGopher(TranslationServiceImpl.getGopher(text.trim(), function));
+
+    this.repository.save(translation);
 
     return translation;
   }
