@@ -29,7 +29,6 @@ public final class StringUtils {
       return wontMatcher.replaceAll("will not");
     }
 
-    //    final Pattern ntPattern = Pattern.compile("[n't ]+");
     final Pattern ntPattern = Pattern.compile("[n't ]{3}");
     final Matcher ntMatcher = ntPattern.matcher(word);
 
