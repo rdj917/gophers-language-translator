@@ -10,6 +10,8 @@ import com.example.gopherslanguagetranslator.rest.contract.WordResponse;
 import com.example.gopherslanguagetranslator.service.TranslationService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,33 +35,33 @@ public class TranslationController {
 
   @PostMapping("/word")
   @ApiOperation(value = "Translate a word in english to a word in gopher")
-  public WordResponse translateWord(@RequestBody final WordRequest request) {
+  public ResponseEntity<WordResponse> translateWord(@RequestBody final WordRequest request) {
     final String word = request.getEnglishWord();
     RequestValidator.validateHasText(word);
     RequestValidator.validateHasNoCRLF(word);
     RequestValidator.validateIsAWord(word);
     final Translation translation = this.translationService.translate(word);
     this.repository.save(translation);
-    return new WordResponse(translation.getGopher());
+    return ResponseEntity.status(HttpStatus.OK).body(new WordResponse(translation.getGopher()));
   }
 
   @PostMapping("/sentence")
   @ApiOperation(value = "Translate a sentence in english to a sentence in gopher")
-  public SentenceResponse translateSentence(@RequestBody final SentenceRequest request) {
+  public ResponseEntity<SentenceResponse> translateSentence(@RequestBody final SentenceRequest request) {
     final String sentence = request.getEnglishSentence();
     RequestValidator.validateHasText(sentence);
     RequestValidator.validateHasNoCRLF(sentence);
     RequestValidator.validateIsASentence(sentence);
     final Translation translation = this.translationService.translate(sentence);
     this.repository.save(translation);
-    return new SentenceResponse(translation.getGopher());
+    return ResponseEntity.status(HttpStatus.OK).body(new SentenceResponse(translation.getGopher()));
   }
 
   @GetMapping("/history")
   @ApiOperation(value = "View all requested translations in ascending alphabetical order")
-  public HistoryResponse getHistory() {
+  public ResponseEntity<HistoryResponse> getHistory() {
     final List<Translation> translations = this.repository.findAllByOrderByEnglishAsc();
-    return new HistoryResponse(TranslationController.convertToMap(translations));
+    return ResponseEntity.status(HttpStatus.OK).body(new HistoryResponse(TranslationController.convertToMap(translations)));
   }
 
   private static LinkedHashMap<String, String> convertToMap(final List<Translation> translations) {
