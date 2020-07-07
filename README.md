@@ -5,7 +5,7 @@
 This application uses Lombok - Java annotation library which helps to reduce boilerplate code. In order to compile you need to enable Java
  annotation processor of your IDE.
 
-##Run the project:
+##1Run the project:
  
 **./gradlew bootRun**
 
