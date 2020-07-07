@@ -22,19 +22,20 @@ public final class StringUtils {
   }
 
   public static String getNonShortenedWord(final String word) {
-    final Pattern wontPattern = Pattern.compile("[won't ]+");
+    final Pattern wontPattern = Pattern.compile("([won't ])+");
     final Matcher wontMatcher = wontPattern.matcher(word);
+
     if (wontMatcher.matches()) {
       return wontMatcher.replaceAll("will not");
     }
 
-    final Pattern ntPattern = Pattern.compile("[n't ]+");
+    //    final Pattern ntPattern = Pattern.compile("[n't ]+");
+    final Pattern ntPattern = Pattern.compile("[n't ]{3}");
     final Matcher ntMatcher = ntPattern.matcher(word);
-    if (ntMatcher.matches()) {
-      return ntMatcher.replaceAll(" not");
-    }
 
-    return word;
+    return ntMatcher.find()
+           ? ntMatcher.replaceAll(" not")
+           : word;
   }
 
   public static boolean hasEndCharacter(final String text) {
@@ -48,11 +49,15 @@ public final class StringUtils {
   }
 
   public static boolean hasNonAlphabetSymbolAtTheStart(final String word) {
-    return StringUtils.hasNonAlphabetSymbol(word, word.substring(0, 1));
+    return word.length() > 1
+           && !StringUtils.isAlphabet(word.substring(0, 1));
   }
 
   public static boolean hasNonAlphabetSymbolAtTheEnd(final String word) {
-    return StringUtils.hasNonAlphabetSymbol(word, word.substring(StringUtils.getSuffixBeginIndex(word)));
+    final int index = StringUtils.getSuffixBeginIndex(word);
+    return index > 0
+           && word.length() > index
+           && !StringUtils.isAlphabet(word.substring(index));
   }
 
   public static boolean isVowel(final char c) {
@@ -63,9 +68,5 @@ public final class StringUtils {
     final Pattern alphabetPattern = Pattern.compile("[a-zA-Z]");
     final Matcher alphabetMatcher = alphabetPattern.matcher(c);
     return alphabetMatcher.matches();
-  }
-
-  private static boolean hasNonAlphabetSymbol(final String word, final String substring) {
-    return word.length() > 0 && !StringUtils.isAlphabet(substring);
   }
 }

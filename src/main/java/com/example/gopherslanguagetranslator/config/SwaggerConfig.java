@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -25,7 +28,7 @@ import java.util.Set;
 @EnableSwagger2
 @RequiredArgsConstructor
 @PropertySource("classpath:version.properties")
-public class SwaggerConfig {
+public class SwaggerConfig implements WebMvcConfigurer {
 
   public static final Set<String> PRODUCES_AND_CONSUMES =
       new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
@@ -34,6 +37,22 @@ public class SwaggerConfig {
 
   @Value("${application.version}")
   private String applicationVersion;
+
+  @Override
+  public void addViewControllers(final ViewControllerRegistry registry) {
+    registry.addRedirectViewController("/documentation/v2/api-docs", "/v2/api-docs").setKeepQueryParams(true);
+    registry.addRedirectViewController("/documentation/swagger-resources/configuration/ui", "/swagger-resources/configuration/ui");
+    registry.addRedirectViewController("/documentation/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
+    registry.addRedirectViewController("/documentation/swagger-resources", "/swagger-resources");
+    registry.addRedirectViewController("/documentation", "/documentation/swagger-ui.html");
+    registry.addRedirectViewController("/documentation/", "/documentation/swagger-ui.html");
+  }
+
+  @Override
+  public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/docApi/swagger-ui.html**").addResourceLocations("classpath:/META-INF/resources/swagger-ui.html");
+    registry.addResourceHandler("/docApi/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+  }
 
   @Bean
   public Docket api() {

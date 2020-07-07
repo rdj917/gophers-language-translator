@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GophersLanguageTranslatorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GophersLanguageTranslatorApplication.class, args);
-	}
-
+  public static void main(final String[] args) {
+    SpringApplication.run(GophersLanguageTranslatorApplication.class, args);
+  }
 }

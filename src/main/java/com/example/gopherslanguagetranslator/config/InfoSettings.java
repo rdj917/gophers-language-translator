@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(value = "info", ignoreUnknownFields = false)
+@ConfigurationProperties(value = "info", ignoreUnknownFields = true)
 public class InfoSettings {
 
   private String title;
