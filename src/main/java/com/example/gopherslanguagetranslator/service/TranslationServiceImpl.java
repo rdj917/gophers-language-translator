@@ -1,7 +1,7 @@
 package com.example.gopherslanguagetranslator.service;
 
 import com.example.gopherslanguagetranslator.model.Translation;
-import com.example.gopherslanguagetranslator.rest.InputValidator;
+import com.example.gopherslanguagetranslator.utils.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class TranslationServiceImpl implements TranslationService {
   }
 
   private static String getGopher(final String text, final Function<String, String> function) {
-    if (InputValidator.hasEndCharacter(text)) {
+    if (StringUtils.hasEndCharacter(text)) {
       return function.apply(text.substring(0, text.length() - 1))
                      .concat(text.substring(text.length() - 1));
     }

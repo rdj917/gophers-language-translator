@@ -1,12 +1,12 @@
 package com.example.gopherslanguagetranslator.rest;
 
-import com.example.gopherslanguagetranslator.model.HistoryResponse;
-import com.example.gopherslanguagetranslator.model.SentenceRequest;
-import com.example.gopherslanguagetranslator.model.SentenceResponse;
 import com.example.gopherslanguagetranslator.model.Translation;
-import com.example.gopherslanguagetranslator.model.WordRequest;
-import com.example.gopherslanguagetranslator.model.WordResponse;
 import com.example.gopherslanguagetranslator.repository.TranslationRepository;
+import com.example.gopherslanguagetranslator.rest.contract.HistoryResponse;
+import com.example.gopherslanguagetranslator.rest.contract.SentenceRequest;
+import com.example.gopherslanguagetranslator.rest.contract.SentenceResponse;
+import com.example.gopherslanguagetranslator.rest.contract.WordRequest;
+import com.example.gopherslanguagetranslator.rest.contract.WordResponse;
 import com.example.gopherslanguagetranslator.service.TranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +29,9 @@ public class TranslationController {
   @PostMapping("/word")
   public WordResponse translateWord(@RequestBody final WordRequest request) {
     final String word = request.getEnglishWord();
-    InputValidator.validateHasText(word);
-    InputValidator.validateHasNoCRLF(word);
-    InputValidator.validateIsAWord(word);
+    RequestValidator.validateHasText(word);
+    RequestValidator.validateHasNoCRLF(word);
+    RequestValidator.validateIsAWord(word);
     final Translation translation = this.translationService.translate(word);
     this.repository.save(translation);
     return new WordResponse(translation.getGopher());
@@ -40,9 +40,9 @@ public class TranslationController {
   @PostMapping("/sentence")
   public SentenceResponse translateSentence(@RequestBody final SentenceRequest request) {
     final String sentence = request.getEnglishSentence();
-    InputValidator.validateHasText(sentence);
-    InputValidator.validateHasNoCRLF(sentence);
-    InputValidator.validateIsASentence(sentence);
+    RequestValidator.validateHasText(sentence);
+    RequestValidator.validateHasNoCRLF(sentence);
+    RequestValidator.validateIsASentence(sentence);
     final Translation translation = this.translationService.translate(sentence);
     this.repository.save(translation);
     return new SentenceResponse(translation.getGopher());

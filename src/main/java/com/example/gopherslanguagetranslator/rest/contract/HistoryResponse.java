@@ -1,4 +1,4 @@
-package com.example.gopherslanguagetranslator.model;
+package com.example.gopherslanguagetranslator.rest.contract;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

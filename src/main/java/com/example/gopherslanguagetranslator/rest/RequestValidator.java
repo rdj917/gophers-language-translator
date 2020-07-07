@@ -1,14 +1,14 @@
 package com.example.gopherslanguagetranslator.rest;
 
 import com.example.gopherslanguagetranslator.exception.BadRequestException;
+import com.example.gopherslanguagetranslator.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import org.springframework.util.StringUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class InputValidator {
+public final class RequestValidator {
 
   public static void validateHasText(@Nullable final String text) {
     if (!StringUtils.hasText(text)) {
@@ -29,14 +29,8 @@ public final class InputValidator {
   }
 
   public static void validateIsASentence(@NonNull final String text) {
-    if (!InputValidator.hasEndCharacter(text)) {
+    if (!StringUtils.hasEndCharacter(text)) {
       throw new BadRequestException("The provided text is not a sentence. Any sentence should end up with one of [.?!]");
     }
-  }
-
-  public static boolean hasEndCharacter(@NonNull final String text) {
-    return text.endsWith(".")
-           || text.endsWith("?")
-           || text.endsWith("!");
   }
 }

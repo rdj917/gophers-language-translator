@@ -29,6 +29,10 @@ dependencies {
     }
 }
 
+bootRun {
+    systemProperties = System.properties as Map<String, ?>
+}
+
 test {
     useJUnitPlatform()
 }

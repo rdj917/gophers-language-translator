@@ -1,4 +1,4 @@
-package com.example.gopherslanguagetranslator.model;
+package com.example.gopherslanguagetranslator.rest.contract;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
