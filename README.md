@@ -28,4 +28,4 @@ Use the default credentials.
 
 ##Swagger
 
-This application have Swagger documentation tool configured. You could access it while application iw running at http://localhost:8080/swager-ui.html.
+This application have Swagger documentation tool configured. You could access it while application is running at http://localhost:8080/swager-ui.html.
