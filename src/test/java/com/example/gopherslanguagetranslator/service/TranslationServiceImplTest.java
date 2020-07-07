@@ -34,15 +34,33 @@ class TranslationServiceImplTest {
   }
 
   @Test
+  void testRule1PreservesTheCapitalLetter() {
+    final Translation result = this.service.translate("Apple");
+    assertEquals("Gapple", result.getGopher());
+  }
+
+  @Test
   void testRule2() {
     final Translation result = this.service.translate("xray");
     assertEquals("gexray", result.getGopher());
   }
 
   @Test
+  void testRule2PreservesTheCapitalLetter() {
+    final Translation result = this.service.translate("Xray");
+    assertEquals("Gexray", result.getGopher());
+  }
+
+  @Test
   void testRule3() {
     final Translation result = this.service.translate("chair");
     assertEquals("airchogo", result.getGopher());
+  }
+
+  @Test
+  void testRule3PreservesTheCapitalLetter() {
+    final Translation result = this.service.translate("Chair");
+    assertEquals("Airchogo", result.getGopher());
   }
 
   @Test
@@ -55,6 +73,12 @@ class TranslationServiceImplTest {
   void testRule4() {
     final Translation result = this.service.translate("square");
     assertEquals("aresquogo", result.getGopher());
+  }
+
+  @Test
+  void testRule4PreservesTheCapitalLetter() {
+    final Translation result = this.service.translate("Square");
+    assertEquals("Aresquogo", result.getGopher());
   }
 
   @Test
