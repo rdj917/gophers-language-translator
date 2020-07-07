@@ -42,7 +42,7 @@ public final class GopherLanguageInterpreter {
     // If a word starts with a vowel letter, add prefix “g” to the word (ex. apple => gapple)
     if (StringUtils.isVowel(word.charAt(0))) {
       final String prefix = isTitle ? "G" : "g";
-      return prefix + word;
+      return prefix + word.toLowerCase();
     }
 
     // If a word starts with the consonant letters “xr”, add the prefix “ge” to the begging of the word (ex. xray => gexray)
@@ -67,10 +67,10 @@ public final class GopherLanguageInterpreter {
            : word;
   }
 
-  private static String applyOgoSuffix(String translatedWord, final boolean isCapitalLetter, final int lengthOfSwitch) {
+  private static String applyOgoSuffix(String translatedWord, final boolean isTitle, final int lengthOfSwitch) {
     final String firstPartRaw = translatedWord.substring(lengthOfSwitch).toLowerCase();
     final String secondPart = translatedWord.substring(0, lengthOfSwitch).toLowerCase();
-    final String firstPart = isCapitalLetter
+    final String firstPart = isTitle
                              ? firstPartRaw.substring(0, 1).toUpperCase() + firstPartRaw.substring(1)
                              : firstPartRaw;
     translatedWord = firstPart + secondPart + "ogo";
