@@ -3,42 +3,48 @@ package com.example.gopherslanguagetranslator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GopherLanguageInterpreter {
 
   public static String translate(final String word) {
     final boolean isTitle = Character.isUpperCase(word.charAt(0));
 
+    // If a word starts with a vowel letter, add prefix “g” to the word (ex. apple => gapple)
     if (GopherLanguageInterpreter.isVowel(word.charAt(0))) {
       final String prefix = isTitle ? "G" : "g";
       return prefix + word;
     }
 
+    // If a word starts with the consonant letters “xr”, add the prefix “ge” to the begging of the word (ex. exray => gexray)
     if (word.toLowerCase().startsWith("xr")) {
       final String prefix = isTitle ? "Ge" : "ge";
       return prefix + word.toLowerCase();
     }
 
+    // If a word starts with a consonant sound followed by "qu", move it to the end of the word, and then add "ogo" suffix to the word
+    // (ex. square => aresquogo)
     if (!GopherLanguageInterpreter.isVowel(word.charAt(0))
         && word.length() > 2
         && word.substring(1, 3).equals("qu")) {
       return GopherLanguageInterpreter.applyOgoSuffix(word, isTitle, 3);
     }
 
-    if (GopherLanguageInterpreter.startsWithConsonant(word)) {
-      return GopherLanguageInterpreter.applyOgoSuffix(word, isTitle, 2);
+    // If a word starts with a consonant sound, move it to the end of the word and then add “ogo” suffix to the word.
+    // Consonant sounds can be made up of multiple consonants, a.k.a. a consonant cluster (ex. chair => airchogo)
+    final int consonantClusterLength = GopherLanguageInterpreter.getConsonantClusterLength(word);
+    if (consonantClusterLength > 0) {
+      return GopherLanguageInterpreter.applyOgoSuffix(word, isTitle, consonantClusterLength);
     }
 
-    final Pattern wontPattern = Pattern.compile("( won't )");
-    final Matcher wontMatcher = wontPattern.matcher(word);
-    final String semiCleaned = wontMatcher.replaceAll("would not ");
+    return word;
+  }
 
-    final Pattern ntPattern = Pattern.compile("(n't )");
-    final Matcher ntMatcher = ntPattern.matcher(semiCleaned);
-    return ntMatcher.replaceAll(" not ");
+  private static int getConsonantClusterLength(final String word) {
+    int i = 0;
+    while (i < word.length() && !GopherLanguageInterpreter.isVowel(word.charAt(i))) {
+      i++;
+    }
+    return i;
   }
 
   private static String applyOgoSuffix(String translatedWord, final boolean isCapitalLetter, final int lengthOfSwitch) {
@@ -49,10 +55,6 @@ public final class GopherLanguageInterpreter {
                              : firstPartRaw;
     translatedWord = firstPart + secondPart + "ogo";
     return translatedWord;
-  }
-
-  private static boolean startsWithConsonant(final String text) {
-    return !GopherLanguageInterpreter.isVowel(text.charAt(0)) && !GopherLanguageInterpreter.isVowel(text.charAt(1));
   }
 
   private static boolean isVowel(final char c) {
