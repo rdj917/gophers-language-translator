@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,11 +36,8 @@ public class TranslationController {
 
   @PostMapping("/word")
   @ApiOperation(value = "Translate a word in english to a word in gopher")
-  public ResponseEntity<WordResponse> translateWord(@RequestBody final WordRequest request) {
+  public ResponseEntity<WordResponse> translateWord(@RequestBody @Valid final WordRequest request) {
     final String word = request.getEnglishWord();
-    RequestValidator.validateHasText(word);
-    RequestValidator.validateHasNoCRLF(word);
-    RequestValidator.validateIsAWord(word);
     final Translation translation = this.translationService.translate(word);
     this.repository.save(translation);
     return ResponseEntity.status(HttpStatus.OK).body(new WordResponse(translation.getGopher()));
@@ -47,11 +45,8 @@ public class TranslationController {
 
   @PostMapping("/sentence")
   @ApiOperation(value = "Translate a sentence in english to a sentence in gopher")
-  public ResponseEntity<SentenceResponse> translateSentence(@RequestBody final SentenceRequest request) {
+  public ResponseEntity<SentenceResponse> translateSentence(@RequestBody @Valid final SentenceRequest request) {
     final String sentence = request.getEnglishSentence();
-    RequestValidator.validateHasText(sentence);
-    RequestValidator.validateHasNoCRLF(sentence);
-    RequestValidator.validateIsASentence(sentence);
     final Translation translation = this.translationService.translate(sentence);
     this.repository.save(translation);
     return ResponseEntity.status(HttpStatus.OK).body(new SentenceResponse(translation.getGopher()));
