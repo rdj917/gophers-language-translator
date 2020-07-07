@@ -24,8 +24,9 @@ public final class GopherLanguageInterpreter {
       word = word.substring(0, StringUtils.getSuffixBeginIndex(word));
     }
 
-    // gather back all the symbols
     final String gopherWord = GopherLanguageInterpreter.applyRules(word);
+
+    // gather back all the symbols
     prefixSymbols.append(gopherWord);
     prefixSymbols.append(suffixSymbols.toString());
 
