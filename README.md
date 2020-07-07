@@ -23,3 +23,6 @@ The default port is 8080. To override the server port use:
 ##H2
 H2 in-memory database is configured. To access the console while application is running, open http://localhost:8080/h2-console/ in the browser.
 Use the default credentials.
+
+##Swagger
+This application have Swagger documentation tool configured. You could access it while application iw running at http://localhost:8080/swager-ui.html.
