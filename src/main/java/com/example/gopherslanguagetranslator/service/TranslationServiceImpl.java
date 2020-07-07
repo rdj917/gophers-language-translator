@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class TranslationServiceImpl implements TranslationService {
@@ -20,7 +19,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     final Function<String, String> function =
         body -> Arrays.stream(body.split(TranslationServiceImpl.DELIMITER))
-                      .flatMap(word -> Arrays.stream(TranslationServiceImpl.removeApostrophes(word).split(TranslationServiceImpl.DELIMITER)))
+                      .flatMap(TranslationServiceImpl::manageShortenedWord)
                       .map(GopherLanguageInterpreter::translate)
                       .collect(Collectors.joining(TranslationServiceImpl.DELIMITER));
 
@@ -31,25 +30,23 @@ public class TranslationServiceImpl implements TranslationService {
     return translation;
   }
 
-  private static String getGopher(final String text, final Function<String, String> function) {
-    if (StringUtils.hasEndCharacter(text)) {
-      return function.apply(text.substring(0, text.length() - 1))
-                     .concat(text.substring(text.length() - 1));
+  private static Stream<? extends String> manageShortenedWord(final String word) {
+    // don’t use shortened versions of words with apostrophes (ex. won’t => will not, don’t => do not, shouldn’t => should not)
+    final String nonShortened = StringUtils.getNonShortenedWord(word);
+
+    // split to multiple words if needed
+    if (nonShortened.contains(TranslationServiceImpl.DELIMITER)) {
+      return Arrays.stream(nonShortened.split(TranslationServiceImpl.DELIMITER));
     }
-    return function.apply(text);
+
+    return Stream.of(nonShortened);
   }
 
-  private static String removeApostrophes(final String word) {
-    // don’t use shortened versions of won't (ex. won’t => will not)
-    final Pattern wontPattern = Pattern.compile("[won't ]+");
-    final Matcher wontMatcher = wontPattern.matcher(word);
-    if (wontMatcher.matches()) {
-      return wontMatcher.replaceAll("will not");
+  private static String getGopher(final String text, final Function<String, String> function) {
+    if (StringUtils.hasEndCharacter(text)) {
+      return function.apply(text.substring(0, StringUtils.getSuffixBeginIndex(text)))
+                     .concat(text.substring(StringUtils.getSuffixBeginIndex(text)));
     }
-
-    // don’t use shortened versions of words with apostrophes (ex. don’t => do not, shouldn’t => should not)
-    final Pattern ntPattern = Pattern.compile("[n't ]+");
-    final Matcher ntMatcher = ntPattern.matcher(word);
-    return ntMatcher.replaceAll(" not");
+    return function.apply(text);
   }
 }
