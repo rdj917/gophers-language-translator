@@ -1,4 +1,4 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.exception;
 
 public class BadRequestException extends RuntimeException {
 

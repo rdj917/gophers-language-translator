@@ -1,5 +1,13 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.rest;
 
+import com.example.gopherslanguagetranslator.model.HistoryResponse;
+import com.example.gopherslanguagetranslator.model.SentenceRequest;
+import com.example.gopherslanguagetranslator.model.SentenceResponse;
+import com.example.gopherslanguagetranslator.model.Translation;
+import com.example.gopherslanguagetranslator.model.WordRequest;
+import com.example.gopherslanguagetranslator.model.WordResponse;
+import com.example.gopherslanguagetranslator.repository.TranslationRepository;
+import com.example.gopherslanguagetranslator.service.TranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

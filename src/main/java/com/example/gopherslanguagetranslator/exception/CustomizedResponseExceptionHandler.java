@@ -1,4 +1,4 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

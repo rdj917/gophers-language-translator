@@ -1,5 +1,7 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.service;
 
+import com.example.gopherslanguagetranslator.model.Translation;
+import com.example.gopherslanguagetranslator.rest.InputValidator;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

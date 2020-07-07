@@ -1,4 +1,4 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.service;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

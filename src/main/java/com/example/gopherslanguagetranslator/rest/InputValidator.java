@@ -1,5 +1,6 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.rest;
 
+import com.example.gopherslanguagetranslator.exception.BadRequestException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;

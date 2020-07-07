@@ -1,5 +1,6 @@
-package com.example.gopherslanguagetranslator;
+package com.example.gopherslanguagetranslator.repository;
 
+import com.example.gopherslanguagetranslator.model.Translation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
