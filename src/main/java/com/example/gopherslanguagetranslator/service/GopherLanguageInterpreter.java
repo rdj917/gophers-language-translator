@@ -45,7 +45,7 @@ public final class GopherLanguageInterpreter {
       return prefix + word;
     }
 
-    // If a word starts with the consonant letters “xr”, add the prefix “ge” to the begging of the word (ex. exray => gexray)
+    // If a word starts with the consonant letters “xr”, add the prefix “ge” to the begging of the word (ex. xray => gexray)
     if (word.toLowerCase().startsWith("xr")) {
       final String prefix = isTitle ? "Ge" : "ge";
       return prefix + word.toLowerCase();
