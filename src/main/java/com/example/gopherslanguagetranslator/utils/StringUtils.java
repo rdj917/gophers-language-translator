@@ -48,8 +48,8 @@ public final class StringUtils {
   }
 
   public static boolean hasNonAlphabetSymbolAtTheStart(final String word) {
-    return word.length() > 1
-           && !StringUtils.isAlphabet(word.substring(0, 1));
+    return (word.length() > 1 && !StringUtils.isAlphabet(word.substring(0, 1)))
+           || (word.length() == 1 && !StringUtils.isAlphabet(word));
   }
 
   public static boolean hasNonAlphabetSymbolAtTheEnd(final String word) {
